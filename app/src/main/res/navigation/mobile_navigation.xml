@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.stepforward.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_teacherAndDetailsFragment"
+            app:destination="@id/teacherAndDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.stepforward.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_teacher"
+        android:name="com.example.stepforward.ui.teacher.TeacherFragment"
+        android:label="@string/menu_teacher"
+        tools:layout="@layout/fragment_teacher" />
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.stepforward.ui.сalendar.CalendarFragment"
+        android:label="CalendarFragment" />
+    <fragment
+        android:id="@+id/feedBackFragment"
+        android:name="com.example.stepforward.ui.feedback.FeedBackFragment"
+        android:label="FeedBackFragment" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.stepforward.ui.setting.SettingFragment"
+        android:label="SettingFragment" />
+    <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.stepforward.ui.notifications.NotificationsFragment"
+        android:label="NotificationsFragment" />
+    <fragment
+        android:id="@+id/teacherAndDetailsFragment"
+        android:name="com.example.stepforward.ui.teacher.TeacherAndDetailsFragment"
+        android:label="fragment_teacher_and_details"
+        tools:layout="@layout/fragment_teacher_and_details" >
+        <action
+            android:id="@+id/action_teacherAndDetailsFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.example.stepforward.ui.profile.ProfileEditFragment"
+        android:label="ProfileEditFragment" />
+</navigation>

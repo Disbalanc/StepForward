@@ -4,10 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SettingViewModel : ViewModel() {
+class SettingsViewModel : ViewModel() {
+    private val _notificationsEnabled = MutableLiveData<Boolean>().apply { value = true }
+    val notificationsEnabled: LiveData<Boolean> = _notificationsEnabled
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is slideshow Fragment"
+    private val _language = MutableLiveData<String>().apply { value = "ru" }
+    val language: LiveData<String> = _language
+
+    fun setNotificationsEnabled(enabled: Boolean) {
+        _notificationsEnabled.value = enabled
     }
-    val text: LiveData<String> = _text
+
+    fun setLanguage(lang: String) {
+        _language.value = lang
+    }
 }

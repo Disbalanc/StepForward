@@ -27,25 +27,25 @@
         android:label="@string/menu_teacher"
         tools:layout="@layout/fragment_teacher" />
     <fragment
-        android:id="@+id/calendarFragment"
-        android:name="com.example.stepforward.ui.сalendar.CalendarFragment"
-        android:label="CalendarFragment" />
+        android:id="@+id/nav_calendar"
+        android:name="com.example.stepforward.ui.calendar.CalendarFragment"
+        android:label="@string/menu_calendar"/>
     <fragment
-        android:id="@+id/feedBackFragment"
-        android:name="com.example.stepforward.ui.feedback.FeedBackFragment"
-        android:label="FeedBackFragment" />
+        android:id="@+id/nav_feedback"
+        android:label="@string/menu_feedback"
+        android:name="com.example.stepforward.ui.feedback.FeedBackFragment"/>
     <fragment
-        android:id="@+id/settingFragment"
+        android:id="@+id/nav_setting"
         android:name="com.example.stepforward.ui.setting.SettingFragment"
         android:label="SettingFragment" />
     <fragment
-        android:id="@+id/notificationsFragment"
+        android:id="@+id/nav_notification"
         android:name="com.example.stepforward.ui.notifications.NotificationsFragment"
-        android:label="NotificationsFragment" />
+        android:label="@string/menu_notification" />
     <fragment
         android:id="@+id/teacherAndDetailsFragment"
         android:name="com.example.stepforward.ui.teacher.TeacherAndDetailsFragment"
-        android:label="fragment_teacher_and_details"
+        android:label="@string/menu_teacher"
         tools:layout="@layout/fragment_teacher_and_details" >
         <action
             android:id="@+id/action_teacherAndDetailsFragment_to_profileEditFragment"
@@ -54,5 +54,5 @@
     <fragment
         android:id="@+id/profileEditFragment"
         android:name="com.example.stepforward.ui.profile.ProfileEditFragment"
-        android:label="ProfileEditFragment" />
+        android:label="@string/menu_profile" />
 </navigation>

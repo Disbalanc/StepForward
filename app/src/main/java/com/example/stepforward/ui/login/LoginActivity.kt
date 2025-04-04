@@ -15,6 +15,7 @@ import android.util.Base64
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.viewModels
 import com.example.stepforward.MainActivity
 import com.example.stepforward.databinding.ActivityLoginBinding
 import com.example.stepforward.data.Result
@@ -25,7 +26,7 @@ import java.io.ByteArrayOutputStream
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var userViewModel: UserViewModel
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,6 @@ class LoginActivity : AppCompatActivity() {
 
         // Инициализация ViewModel
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory(this)).get(LoginViewModel::class.java)
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         val subscriptionNumber = binding.subscriptionNumber
         val name = binding.name
@@ -66,9 +66,11 @@ class LoginActivity : AppCompatActivity() {
             if (result.error != null) {
                 showLoginFailed(result.error)
             }
+            // LoginActivity.kt
             if (result.success != null) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("loggedInUser ", result.success) // Передаем объект без изображения
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("USER_DATA", result.success)
+                }
                 startActivity(intent)
                 finish()
             }
@@ -110,45 +112,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun fillUserData() {
-        // Загрузка изображения из ресурсов
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.logo_img)
-
-        // Проверка на null
-        if (bitmap == null) {
-            // Обработка ошибки, если изображение не загружено
-            return
-        }
-
-        // Преобразование изображения в байты
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        val byteArray = byteArrayOutputStream.toByteArray()
-
-        // Кодирование в Base64
-        val imgBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
-
-        // Освобождение ресурсов
-        byteArrayOutputStream.close()
-        bitmap.recycle()
-
-        // Создание экземпляра LoggedInUser с картинкой
-        val user = LoggedInUser(
-            userId = "1",
-            abonement = "2325 5321 5100 1200",
-            pass = "123",
-            displayName = "Виктория",
-            displaySecondName = "Кац",
-            displaySurName = "Олеговна",
-            dateBirthday = "18.10.2012",
-            imagePath = imgBase64
-        )
-
-        // Дальнейшие действия с заполненным классом
+    fun fillUserData(user: LoggedInUser ) {
+        // Здесь можно добавить логику для заполнения данных, если нужно
+        // Например, можно использовать переданные данные для создания объекта LoggedInUser
+        userViewModel.updateUser (user) // Обновляем UserViewModel
     }
 
     private fun updateUiWithUser(model: LoggedInUser) {
-        val welcome = getString(R.string.welcome)
+        val welcome = getString(R.string.Welcome)
         val displayName = model.displayName
         Toast.makeText(
             applicationContext,

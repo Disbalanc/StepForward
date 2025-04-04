@@ -1,38 +1,53 @@
-package com.example.stepforward.ui.сalendar
+package com.example.stepforward.ui.calendar
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.stepforward.data.Adapters.CalendarAdapter
 import com.example.stepforward.databinding.FragmentCalendarBinding
+import com.example.stepforward.ui.login.UserViewModel
 
 class CalendarFragment : Fragment() {
 
     private var _binding: FragmentCalendarBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private val userViewModel: UserViewModel by viewModels(ownerProducer = { requireActivity() })
+    private lateinit var calendarAdapter: CalendarAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val calendarViewModel =
-            ViewModelProvider(this).get(CalendarViewModel::class.java)
-
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textSlideshow
-        calendarViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        observeViewModel()
+    }
+
+    private fun setupRecyclerView() {
+        calendarAdapter = CalendarAdapter(emptyList())
+        binding.calendarRc.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = calendarAdapter
+            setHasFixedSize(true)
         }
-        return root
+    }
+
+    private fun observeViewModel() {
+        userViewModel.user.observe(viewLifecycleOwner) { user ->
+            user?.daySession?.let { sessions ->
+                calendarAdapter.updateList(sessions.sortedDescending())
+            }
+        }
     }
 
     override fun onDestroyView() {

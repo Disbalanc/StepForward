@@ -48,7 +48,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ваше имя"
+        android:text="@string/youName"
         android:textSize="16sp"
         android:textColor="@color/white"/>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/text_round"
                 android:padding="5dp"
-                android:text="Имя"
+                android:text="@string/Name"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -75,7 +75,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Номер абонемента"
+            android:text="@string/SubNum"
             android:textSize="16sp"
             android:textColor="@color/white"/>
 
@@ -135,10 +135,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/login"
+        android:id="@+id/saveBtn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="@string/Sign"
+        android:text="@string/save"
         android:background="@drawable/button_background"
         android:textColor="#FFFFFF"
         android:textSize="14sp"

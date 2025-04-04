@@ -7,11 +7,17 @@ import androidx.lifecycle.ViewModel
 import com.example.stepforward.data.model.LoggedInUser
 
 class UserViewModel : ViewModel() {
+    // 1. Изменяем тип на nullable
     private val _user = MutableLiveData<LoggedInUser?>()
     val user: LiveData<LoggedInUser?> = _user
 
-    fun updateUser (newUser:  LoggedInUser ) {
-        _user.value = newUser
-        Log.d("User ViewModel", "User  updated: $newUser ")
+    fun updateUser(updatedUser: LoggedInUser) {
+        Log.d("UserViewModel", "Updating user: $updatedUser")
+        _user.value = updatedUser
+    }
+
+    fun clearUserData() {
+        Log.d("UserViewModel", "Clearing user data")
+        _user.value = null // Теперь это допустимо
     }
 }

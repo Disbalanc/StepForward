@@ -61,7 +61,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Кац Виктория Олеговна"
+            android:text="Олеговна"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,7 +88,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Имя"
+        android:text="@string/Name"
         android:textSize="16sp"
         android:textColor="@color/white"/>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -127,7 +127,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Фамилия"
+            android:text="@string/surName"
             android:textSize="16sp"
             android:textColor="@color/white"/>
 
@@ -167,7 +167,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Отчество"
+            android:text="@string/secondName"
             android:textSize="16sp"
             android:textColor="@color/white"/>
 
@@ -207,7 +207,7 @@
             android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Дата рождения"
+            android:text="@string/bithday"
             android:textSize="16sp"
             android:textColor="@color/white"/>
 

@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Date
 import java.util.UUID
 
 /**
@@ -45,7 +46,14 @@ class LoginDataSource(private val context: Context) { // Добавляем ко
                 displaySecondName = "Кац",
                 displaySurName = "Олеговна",
                 dateBirthday = "18.10.2012",
-                imagePath = imagePath // Передаем путь к изображению
+                imagePath = imagePath,
+                daySession = listOf(
+                    // Примеры дат с разным временем
+                    Date(System.currentTimeMillis() - 2 * 86400000), // 2 дня назад
+                    Date(System.currentTimeMillis() - 86400000),     // вчера
+                    Date(),                                          // сейчас
+                    Date(System.currentTimeMillis() + 86400000)      // завтра
+                ).sortedDescending() // Сортируем по убыванию для отображения
             )
 
             Result.Success(fakeUser )

@@ -2,26 +2,34 @@ package com.example.stepforward.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.Date
 
-data class LoggedInUser (
-    val userId: String = "", // Значение по умолчанию
-    val abonement: String = "", // Значение по умолчанию
-    val pass: String = "", // Значение по умолчанию
-    val displayName: String = "", // Значение по умолчанию
-    val displaySecondName: String = "", // Значение по умолчанию
-    val displaySurName: String = "", // Значение по умолчанию
-    val dateBirthday: String = "", // Значение по умолчанию
-    val imagePath: String = "" // Значение по умолчанию
+data class LoggedInUser(
+    val userId: String = "",
+    val abonement: String = "",
+    val pass: String = "",
+    val displayName: String = "",
+    val displaySecondName: String = "",
+    val displaySurName: String = "",
+    val dateBirthday: String = "",
+    val imagePath: String = "",
+    val daySession: List<Date> = emptyList()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString() ?: "",  // userId
-        parcel.readString() ?: "",  // abonement
-        parcel.readString() ?: "",  // pass
-        parcel.readString() ?: "",  // displayName
-        parcel.readString() ?: "",  // displaySecondName
-        parcel.readString() ?: "",  // displaySurName
-        parcel.readString() ?: "",  // dateBirthday
-        parcel.readString() ?: ""   // Img
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        mutableListOf<Date>().apply {
+            val size = parcel.readInt()
+            for (i in 0 until size) {
+                add(Date(parcel.readLong()))
+            }
+        }
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -33,6 +41,10 @@ data class LoggedInUser (
         parcel.writeString(displaySurName)
         parcel.writeString(dateBirthday)
         parcel.writeString(imagePath)
+        parcel.writeInt(daySession.size)
+        daySession.forEach { date ->
+            parcel.writeLong(date.time)
+        }
     }
 
     override fun describeContents(): Int {

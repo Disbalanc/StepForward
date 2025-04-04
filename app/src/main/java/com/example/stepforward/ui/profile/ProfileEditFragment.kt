@@ -6,12 +6,15 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.example.stepforward.R
 import com.example.stepforward.data.model.LoggedInUser
 import com.example.stepforward.databinding.FragmentProfileEditBinding
 import com.example.stepforward.ui.login.UserViewModel
@@ -20,7 +23,7 @@ import java.io.File
 class ProfileEditFragment : Fragment() {
 
     private var _binding: FragmentProfileEditBinding? = null
-    private lateinit var userViewModel: UserViewModel
+    private val userViewModel: UserViewModel by viewModels(ownerProducer = { requireActivity() })
     private var tempImagePath: String? = null
 
     private val binding get() = _binding!!
@@ -33,9 +36,7 @@ class ProfileEditFragment : Fragment() {
             data?.data?.let { uri ->
                 // Сохраняем временный путь к изображению
                 tempImagePath = getRealPathFromURI(uri)
-                tempImagePath?.let {
-                    binding.profileImage.setImageURI(uri)
-                }
+                binding.profileImage.setImageURI(uri) // Устанавливаем изображение в ImageView
             }
         }
     }
@@ -45,7 +46,6 @@ class ProfileEditFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
         _binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,13 +53,8 @@ class ProfileEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupUI()
         setupObservers()
         setupClickListeners()
-    }
-
-    private fun setupUI() {
-        binding.login.text = "Сохранить"
     }
 
     private fun setupObservers() {
@@ -71,17 +66,22 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun loadUserData(user: LoggedInUser) {
-        // Загрузка изображения
+        Log.d("ProfileEdit", "Loading user: ${user.displayName}, image: ${user.imagePath}")
+
         if (user.imagePath.isNotEmpty()) {
-            val bitmap = BitmapFactory.decodeFile(user.imagePath)
-            bitmap?.let {
-                binding.profileImage.setImageBitmap(it)
+            val file = File(user.imagePath)
+            if (file.exists()) {
+                val bitmap = BitmapFactory.decodeFile(user.imagePath)
+                binding.profileImage.setImageBitmap(bitmap)
+            } else {
+                binding.profileImage.setImageResource(R.drawable.ic_profile)
             }
+        } else {
+            binding.profileImage.setImageResource(R.drawable.ic_profile)
         }
 
-        // Установка данных в поля
-        binding.nameText.setText(user.displayName) // Исправлено на nameText
-        binding.abonementText.setText(user.abonement) // Исправлено на abonementText
+        binding.nameText.setText(user.displayName)
+        binding.abonementText.setText(user.abonement)
     }
 
     private fun setupClickListeners() {
@@ -91,7 +91,7 @@ class ProfileEditFragment : Fragment() {
         }
 
         // Сохранение изменений
-        binding.login.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             saveChanges()
         }
     }
@@ -102,28 +102,32 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun saveChanges() {
-        val currentUser  = userViewModel.user.value ?: return
+        val currentUser = userViewModel.user.value ?: run {
+            Log.e("ProfileEdit", "User is null")
+            return
+        }
 
-        val updatedUser  = currentUser .copy(
-            displayName = binding.nameText.text.toString(), // Исправлено на nameText
-            abonement = binding.abonementText.text.toString(), // Исправлено на abonementText
-            imagePath = tempImagePath ?: currentUser .imagePath
+        val newImagePath = tempImagePath ?: currentUser.imagePath
+        Log.d("ProfileEdit", "Saving image path: $newImagePath")
+
+        val updatedUser = currentUser.copy(
+            displayName = binding.nameText.text.toString(),
+            abonement = binding.abonementText.text.toString(),
+            imagePath = newImagePath
         )
 
-        userViewModel.updateUser (updatedUser )
+        userViewModel.updateUser(updatedUser)
         requireActivity().onBackPressed()
     }
 
     private fun getRealPathFromURI(uri: Uri): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = requireActivity().contentResolver.query(uri, projection, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val columnIndex = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                return it.getString(columnIndex)
+        return context?.contentResolver?.openInputStream(uri)?.use { inputStream ->
+            val file = File.createTempFile("temp_image", ".jpg", context?.cacheDir)
+            file.outputStream().use { outputStream ->
+                inputStream.copyTo(outputStream)
             }
+            file.absolutePath
         }
-        return null
     }
 
     override fun onDestroyView() {

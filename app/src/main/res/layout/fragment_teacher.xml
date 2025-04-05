@@ -9,57 +9,71 @@
     android:scrollbars="none"
     android:background="#161616"
     android:fadeScrollbars="false"
-    android:overScrollMode="never">
+    android:overScrollMode="never"
+    tools:context=".ui.teacher.TeacherFragment">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#161616"
-        tools:context=".ui.teacher.TeacherFragment">
+        android:background="#161616">
 
         <ImageView
-            android:id="@+id/profile_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:id="@+id/teacherImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:background="@drawable/circle_background"
             android:clipToOutline="true"
+            android:layout_marginTop="50dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/logo1Image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="@+id/teacherImage"
+            app:layout_constraintEnd_toStartOf="@+id/teacherImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/teacherImage" />
+
+        <ImageView
+            android:id="@+id/logo2Image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toBottomOf="@+id/teacherImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/teacherImage"
+            app:layout_constraintTop_toTopOf="@+id/teacherImage" />
+
         <TextView
-            android:id="@+id/titleTeacher"
+            android:id="@+id/teacherName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:text="@string/StyleAndDirection"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/profile_image" />
+            app:layout_constraintTop_toBottomOf="@+id/teacherImage" />
 
-        <TextView
-            android:id="@+id/record_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_rectangle"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="@string/RecordTrialLesson"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTeacher" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/record_btn">
+            app:layout_constraintTop_toBottomOf="@+id/teacherName">
 
             <ImageView
                 android:id="@+id/StyleDanceImage"
@@ -75,13 +89,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
                 android:text="@string/StyleDance"
-                android:textColor="#FFFFFF"
+                android:textColor="#CD0F6D"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/StyleDance"
+            <TextView
+                android:id="@+id/teacherDirection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/StyleAndDirection"
@@ -95,6 +109,7 @@
             android:id="@+id/constraintLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout1">
@@ -113,13 +128,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
                 android:text="@string/MasterClass"
-                android:textColor="#FFFFFF"
+                android:textColor="#CD0F6D"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/MasterClass_rc"
+            <TextView
+                android:id="@+id/teacherMasterClass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/StyleAndDirection"
@@ -134,6 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
@@ -151,22 +167,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
                 android:text="@string/Achievements"
-                android:textColor="#FFFFFF"
+                android:textColor="#CD0F6D"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/Achievements_rc"
+            <TextView
+                android:id="@+id/teacherAchievements"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/StyleAndDirection"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/titleAchievements"
                 app:layout_constraintTop_toBottomOf="@+id/titleAchievements" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

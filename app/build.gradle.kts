@@ -59,6 +59,10 @@ dependencies {
     implementation (libs.storage.kt) // Проверьте актуальную версию
     implementation (libs.auth.kt) // Проверьте актуальную версию
 
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("androidx.core:core-splashscreen:1.0.1")
+
     // Ktor dependencies
     //noinspection UseTomlInstead
     implementation ("io.ktor:ktor-client-android:3.1.0") // Проверьте актуальную версию

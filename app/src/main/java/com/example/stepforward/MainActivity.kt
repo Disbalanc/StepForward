@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
@@ -18,13 +19,17 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.stepforward.databinding.ActivityMainBinding
 import com.example.stepforward.ui.login.LoginActivity
 import com.example.stepforward.data.model.LoggedInUser
+import com.example.stepforward.data.model.Teacher
 import com.example.stepforward.ui.calendar.CalendarFragment
 import com.example.stepforward.ui.login.UserViewModel
 import com.example.stepforward.ui.notifications.NotificationsFragment
 import com.example.stepforward.ui.profile.ProfileFragment
+import com.example.stepforward.ui.teacher.TeacherFragment
 import com.google.android.material.navigation.NavigationView
 
 @Suppress("DEPRECATION")
@@ -32,6 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var profileImageView: ImageView
     private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +50,9 @@ class MainActivity : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
+        val headerView = navView.getHeaderView(0)
+        profileImageView = headerView.findViewById(R.id.profileLogo_imageView)
+
         val navController = findNavController(R.id.nav_host_fragment_content_main)
 
         // Извлекаем данные пользователя из Intent
@@ -65,14 +74,30 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Наблюдаем за изменениями в UserViewModel
+        userViewModel.user.observe(this) { user ->
+            user?.let {
+                // Обновляем изображение профиля
+                updateProfileImage(it.imagePath) // Предполагается, что imagePath - это путь к изображению
+            }
+        }
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_teacher, R.id.nav_notification, R.id.nav_setting, R.id.nav_calendar, R.id.nav_feedback, R.id.nav_logout
+                R.id.nav_home, R.id.nav_profile, R.id.nav_teacher, R.id.nav_notification, R.id.nav_setting, R.id.nav_calendar, R.id.nav_feedback, R.id.group_bottom, R.id.nav_logout
             ), drawerLayout
         )
 
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.nav_teacher -> {
+                    val teacherFragment = TeacherFragment() // Убедитесь, что это правильный ID действия
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment_content_main, teacherFragment)
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
                 R.id.nav_setting -> {
                     // Переход на NotificationsFragment без передачи данных через Bundle
                     val notificationFragment = NotificationsFragment()
@@ -120,6 +145,13 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    private fun updateProfileImage(imagePath: String) {
+        Glide.with(this)
+            .load(imagePath)
+            .transform(CircleCrop()) // Применяем трансформацию CircleCrop
+            .into(profileImageView)
     }
 
     private fun showLogoutConfirmationDialog() {

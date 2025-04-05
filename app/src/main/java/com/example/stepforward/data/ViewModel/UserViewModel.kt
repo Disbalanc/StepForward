@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.stepforward.data.model.LoggedInUser
+import com.example.stepforward.data.model.Teacher
 
 class UserViewModel : ViewModel() {
     // 1. Изменяем тип на nullable
@@ -19,5 +20,9 @@ class UserViewModel : ViewModel() {
     fun clearUserData() {
         Log.d("UserViewModel", "Clearing user data")
         _user.value = null // Теперь это допустимо
+    }
+
+    fun getTeacher(): Teacher? {
+        return _user.value?.teacher
     }
 }

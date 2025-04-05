@@ -160,7 +160,7 @@ class HomeFragment : Fragment() {
         Teacher(
             idTeacher = 1,
             imageRes = R.drawable.teacher1, // Убедитесь, что этот ресурс существует
-            name = "Оличка",
+            name = "Оля",
             direction = listOf("Современные танцы", "Хип-Хоп"),
             achievements = listOf("Победитель конкурса танцев", "Сертифицированный тренер"),
             master_class = listOf("Мастер-класс по хип-хопу", "Современные танцы для начинающих")
@@ -168,7 +168,7 @@ class HomeFragment : Fragment() {
         Teacher(
             idTeacher = 2,
             imageRes = R.drawable.teacher2, // Убедитесь, что этот ресурс существует
-            name = "Красивая девушка",
+            name = "Учитель 1",
             direction = listOf("Бальные танцы", "Современные танцы"),
             achievements = listOf("Чемпионка по бальным танцам", "Участница международных конкурсов"),
             master_class = listOf("Бальные танцы для начинающих", "Современные танцы для детей")
@@ -176,7 +176,7 @@ class HomeFragment : Fragment() {
         Teacher(
             idTeacher = 3,
             imageRes = R.drawable.teacher3, // Убедитесь, что этот ресурс существует
-            name = "Какая-то женщина",
+            name = "Учитель 2",
             direction = listOf("Танцы на пилоне", "Стрип-пластика"),
             achievements = listOf("Победительница чемпионата по танцам на пилоне", "Тренер с 10-летним стажем"),
             master_class = listOf("Танцы на пилоне для начинающих", "Стрип-пластика для женщин")

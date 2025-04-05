@@ -5,22 +5,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stepforward.R
 import com.example.stepforward.ui.login.LoginActivity
 import io.github.jan.supabase.auth.auth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
 
         CoroutineScope(Dispatchers.Main).launch {
             checkAuth()
-            delay(2000) // Лучше использовать delay вместо Thread.sleep
+            delay(2000)
             navigateToLogin()
         }
     }

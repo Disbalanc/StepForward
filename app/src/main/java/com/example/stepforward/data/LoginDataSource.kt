@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import com.example.stepforward.R
 import com.example.stepforward.data.model.LoggedInUser
+import com.example.stepforward.data.model.Teacher
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -53,7 +54,15 @@ class LoginDataSource(private val context: Context) { // Добавляем ко
                     Date(System.currentTimeMillis() - 86400000),     // вчера
                     Date(),                                          // сейчас
                     Date(System.currentTimeMillis() + 86400000)      // завтра
-                ).sortedDescending() // Сортируем по убыванию для отображения
+                ).sortedDescending(),
+                teacher = Teacher(
+                    idTeacher = 1,
+                    imageRes = R.drawable.teacher1,
+                    name = "Оличка",
+                    direction = listOf("Современные танцы", "Хип-Хоп"),
+                    achievements = listOf("Победитель конкурса танцев", "Сертифицированный тренер"),
+                    master_class = listOf("Мастер-класс по хип-хопу", "Современные танцы для начинающих")
+                )
             )
 
             Result.Success(fakeUser )

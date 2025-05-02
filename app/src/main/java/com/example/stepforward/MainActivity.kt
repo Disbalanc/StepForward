@@ -24,13 +24,16 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.stepforward.databinding.ActivityMainBinding
 import com.example.stepforward.ui.login.LoginActivity
 import com.example.stepforward.data.model.LoggedInUser
+import com.example.stepforward.data.model.Role
 import com.example.stepforward.data.model.Teacher
+import com.example.stepforward.ui.addUser.AddUserFragment
 import com.example.stepforward.ui.calendar.CalendarFragment
 import com.example.stepforward.ui.login.UserViewModel
 import com.example.stepforward.ui.notifications.NotificationsFragment
 import com.example.stepforward.ui.profile.ProfileFragment
 import com.example.stepforward.ui.teacher.TeacherFragment
 import com.google.android.material.navigation.NavigationView
+import java.io.File
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
@@ -76,15 +79,21 @@ class MainActivity : AppCompatActivity() {
 
         // Наблюдаем за изменениями в UserViewModel
         userViewModel.user.observe(this) { user ->
-            user?.let {
-                // Обновляем изображение профиля
-                updateProfileImage(it.imagePath) // Предполагается, что imagePath - это путь к изображению
+            if (user != null) {
+                Log.d("MainActivity", "Current user: $user")
+                // Обновляем меню в зависимости от роли
+                updateNavigationMenu(user.role)
+                updateProfileImage(user.imagePath)
+            } else {
+                Log.e("MainActivity", "No user data available")
             }
         }
 
+
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_profile, R.id.nav_teacher, R.id.nav_notification, R.id.nav_setting, R.id.nav_calendar, R.id.nav_feedback, R.id.group_bottom, R.id.nav_logout
+                R.id.nav_home, R.id.nav_profile, R.id.nav_teacher, R.id.nav_notification, R.id.nav_setting, R.id.nav_calendar, R.id.nav_feedback, R.id.nav_add_user, R.id.group_bottom, R.id.nav_logout
             ), drawerLayout
         )
 
@@ -133,6 +142,18 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                     true
                 }
+                R.id.nav_add_user -> {
+                    if (userViewModel.user.value?.role == Role.ADMIN) {
+                        val addUserFragment = AddUserFragment()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.nav_host_fragment_content_main, addUserFragment)
+                            .addToBackStack(null)
+                            .commit()
+                        true
+                    } else {
+                        false
+                    }
+                }
                 else -> {
                     // Стандартная обработка через NavController
                     menuItem.isChecked = true
@@ -147,11 +168,28 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    private fun updateNavigationMenu(role: Role) {
+        val navView = binding.navView
+        val menu = navView.menu
+        // Показываем или скрываем пункт меню для добавления пользователей
+        menu.findItem(R.id.nav_add_user).isVisible = role == Role.ADMIN
+    }
+
     private fun updateProfileImage(imagePath: String) {
-        Glide.with(this)
-            .load(imagePath)
-            .transform(CircleCrop()) // Применяем трансформацию CircleCrop
-            .into(profileImageView)
+        if (imagePath.isNotEmpty()) {
+            val file = File(imagePath)
+            if (file.exists()) {
+                Glide.with(this)
+                    .load(imagePath)
+                    .transform(CircleCrop())
+                    .into(profileImageView)
+            } else {
+                Log.e("MainActivity", "Image file not found: $imagePath")
+                profileImageView.setImageResource(R.drawable.ic_profile)
+            }
+        } else {
+            profileImageView.setImageResource(R.drawable.ic_profile)
+        }
     }
 
     private fun showLogoutConfirmationDialog() {

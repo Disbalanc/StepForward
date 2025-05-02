@@ -41,6 +41,7 @@
     <string name="ClubCart">клубная карта</string>
     <string name="Feedback">Обратная связь</string>
     <string name="WeNetwork">Мы в соц сетях</string>
+    <string name="menu_add_user">Добавить пользователя</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -158,4 +159,6 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

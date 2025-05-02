@@ -4,6 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import java.util.Date
 
+enum class Role {
+    USER, ADMIN
+}
+
 data class LoggedInUser (
     val userId: String = "",
     val abonement: String = "",
@@ -12,9 +16,10 @@ data class LoggedInUser (
     val displaySecondName: String = "",
     val displaySurName: String = "",
     val dateBirthday: String = "",
-    val imagePath: String = "",
+    var imagePath: String = "",
     val daySession: List<Date> = emptyList(),
-    val teacher: Teacher
+    val teacher: Teacher,
+    val role: Role = Role.USER
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -31,7 +36,8 @@ data class LoggedInUser (
                 add(Date(parcel.readLong()))
             }
         },
-        parcel.readParcelable(Teacher::class.java.classLoader) ?: Teacher(0, 0, "", emptyList(), emptyList(), emptyList()) // Чтение teacher
+        parcel.readParcelable(Teacher::class.java.classLoader) ?: Teacher(0, 0, "", emptyList(), emptyList(), emptyList()), // Чтение teacher
+        Role.values()[parcel.readInt()] // Чтение роли
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -48,6 +54,7 @@ data class LoggedInUser (
             parcel.writeLong(date.time)
         }
         parcel.writeParcelable(teacher, flags) // Запись teacher
+        parcel.writeInt(role.ordinal) // Сохранение роли
     }
 
     override fun describeContents(): Int {

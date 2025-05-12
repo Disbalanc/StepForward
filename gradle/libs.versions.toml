@@ -1,5 +1,5 @@
 [versions]
-agp = "8.8.1"  # Android Gradle Plugin
+agp = "8.6.0"  # Android Gradle Plugin
 gson = "2.10.1"
 hiltAndroid = "2.55"  # Обновленная версия Hilt
 hiltNavigationCompose = "1.2.0"  # Обновленная версия Hilt Navigation Compose

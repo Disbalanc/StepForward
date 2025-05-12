@@ -39,10 +39,14 @@ class LoginDataSource(private val context: Context) {
                 dateBirthday = user.dateBirthday,
                 imagePath = user.imagePath,
                 daySession = listOf(
-                    java.util.Date(System.currentTimeMillis() - 2 * 86400000),
-                    java.util.Date(System.currentTimeMillis() - 86400000),
-                    java.util.Date(),
-                    java.util.Date(System.currentTimeMillis() + 86400000)
+                    java.util.Date(System.currentTimeMillis() - 6 * 86400000),  // 6 дней назад
+                    java.util.Date(System.currentTimeMillis() - 5 * 86400000), // 5 дней назад
+                    java.util.Date(System.currentTimeMillis() - 2 * 86400000), // 2 дня назад
+                    java.util.Date(System.currentTimeMillis() - 86400000),     // 1 день назад
+                    java.util.Date(),                                         // текущее время
+                    java.util.Date(System.currentTimeMillis() + 86400000),    // завтра
+                    java.util.Date(System.currentTimeMillis() + 3 * 86400000), // 3 дня вперед
+                    java.util.Date(System.currentTimeMillis() + 4 * 86400000), // 4 дня вперед
                 ).sortedDescending(),
                 teacher = user.teacher,
                 role = user.role

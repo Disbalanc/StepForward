@@ -1,9 +1,12 @@
 package com.example.stepforward.data.Adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stepforward.R
 import java.text.SimpleDateFormat
@@ -16,6 +19,7 @@ class CalendarAdapter(private var items: List<Date>) :
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameDay: TextView = view.findViewById(R.id.nameDay_tv)
         val time: TextView = view.findViewById(R.id.time_tv)
+        val back: LinearLayout = view.findViewById(R.id.back)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,6 +36,16 @@ class CalendarAdapter(private var items: List<Date>) :
 
         holder.nameDay.text = dayFormat.format(date)
         holder.time.text = timeFormat.format(date)
+
+        // Проверка, является ли дата прошедшей
+        if (isPastDate(date)) {
+            holder.back.backgroundTintList = holder.itemView.context.resources.getColorStateList(R.color.lt_gray)
+        }
+    }
+
+    private fun isPastDate(date: Date): Boolean {
+        val currentDate = Date()
+        return date.before(currentDate)
     }
 
     fun updateList(newList: List<Date>) {

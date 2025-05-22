@@ -14,6 +14,7 @@ import com.example.stepforward.R
 import com.example.stepforward.data.model.LoggedInUser
 import com.example.stepforward.databinding.FragmentProfileBinding
 import com.example.stepforward.ui.login.UserViewModel
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -59,12 +60,20 @@ class ProfileFragment : Fragment() {
         // Заполнение полей данными пользователя
         binding.fullName.text = "${user.displayName} ${user.displaySecondName} ${user.displaySurName}"
 
-        // Загрузка изображения
-        val bitmap = BitmapFactory.decodeFile(user.imagePath)
-        if (bitmap != null) {
-            binding.profileImage.setImageBitmap(bitmap)
+        if (user.imagePath.isNotEmpty()) {
+            val file = File(user.imagePath)
+            if (file.exists()) {
+                val bitmap = BitmapFactory.decodeFile(user.imagePath)
+                if (bitmap != null) {
+                    binding.profileImage.setImageBitmap(bitmap)
+                } else {
+                    binding.profileImage.setImageResource(R.drawable.ic_profile)
+                }
+            } else {
+                binding.profileImage.setImageResource(R.drawable.ic_profile)
+            }
         } else {
-            Log.e("ProfileFragment", "Failed to load image from path: ${user.imagePath}")
+            binding.profileImage.setImageResource(R.drawable.ic_profile)
         }
 
         // Calculate age

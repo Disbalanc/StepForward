@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Calendar
 import java.util.Date
 import java.util.UUID
 
@@ -30,7 +31,7 @@ class LoginDataSource(private val context: Context) {
             // Загрузка изображения из файла
             val bitmap = userFileDataSource.loadUserImage(context, user.imagePath)
             val fakeUser = user.copy(
-                userId = UUID.randomUUID().toString(),
+                userId = user.userId,
                 abonement = user.abonement.chunked(4).joinToString(" "),
                 pass = user.pass,
                 displayName = user.displayName,
@@ -38,16 +39,7 @@ class LoginDataSource(private val context: Context) {
                 displaySurName = user.displaySurName,
                 dateBirthday = user.dateBirthday,
                 imagePath = user.imagePath,
-                daySession = listOf(
-                    java.util.Date(System.currentTimeMillis() - 6 * 86400000),  // 6 дней назад
-                    java.util.Date(System.currentTimeMillis() - 5 * 86400000), // 5 дней назад
-                    java.util.Date(System.currentTimeMillis() - 2 * 86400000), // 2 дня назад
-                    java.util.Date(System.currentTimeMillis() - 86400000),     // 1 день назад
-                    java.util.Date(),                                         // текущее время
-                    java.util.Date(System.currentTimeMillis() + 86400000),    // завтра
-                    java.util.Date(System.currentTimeMillis() + 3 * 86400000), // 3 дня вперед
-                    java.util.Date(System.currentTimeMillis() + 4 * 86400000), // 4 дня вперед
-                ).sortedDescending(),
+                daySession = user.daySession,
                 teacher = user.teacher,
                 role = user.role
             )
@@ -76,17 +68,15 @@ class LoginDataSource(private val context: Context) {
         userFileDataSource.createUser(user)
     }
 
-    // Функция для сохранения изображения в файл
     private fun saveImageToFile(bitmap: Bitmap): String {
-        val file = File(context.cacheDir, "user_image.png") // Путь к файлу
+        val file = File(context.cacheDir, "user_image.png")
         FileOutputStream(file).use { outputStream ->
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         }
-        return file.absolutePath // Возвращаем путь к файлу
+        return file.absolutePath
     }
 }
 
-// Extension функция для преобразования Bitmap в Base64
 fun Bitmap.toBase64(): String {
     return ByteArrayOutputStream().use { outputStream ->
         this.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)

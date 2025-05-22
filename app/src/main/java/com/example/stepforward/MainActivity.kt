@@ -7,7 +7,9 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
@@ -34,6 +36,9 @@ import com.example.stepforward.ui.profile.ProfileFragment
 import com.example.stepforward.ui.teacher.TeacherFragment
 import com.google.android.material.navigation.NavigationView
 import java.io.File
+import android.net.Uri
+import android.widget.TextView
+
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {

@@ -1,6 +1,8 @@
 package com.example.stepforward.ui.home
 
 import TeacherAdapter
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -61,8 +63,15 @@ class HomeFragment : Fragment() {
             // код обработки нажатия на кнопку записи на пробный прием
         }
 
+        // Добавить обработчик нажатия для текста обратной связи
+        binding.feedBack.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stepup66.ru/"))
+            startActivity(intent)
+        }
+
         return binding.root
     }
+
 
     private fun setupAllCarousels() {
         // Настройка карусели преподавателей

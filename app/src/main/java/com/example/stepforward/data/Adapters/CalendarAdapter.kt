@@ -31,8 +31,8 @@ class CalendarAdapter(private var items: List<Date>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val date = items[position]
-        val dayFormat = SimpleDateFormat("EEEE", Locale.getDefault())
-        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val dayFormat = SimpleDateFormat("EEEE", Locale("ru")) // Установите локаль на русский
+        val timeFormat = SimpleDateFormat("HH:mm", Locale("ru")) // Установите локаль на русский
 
         holder.nameDay.text = dayFormat.format(date)
         holder.time.text = timeFormat.format(date)
@@ -42,6 +42,7 @@ class CalendarAdapter(private var items: List<Date>) :
             holder.back.backgroundTintList = holder.itemView.context.resources.getColorStateList(R.color.lt_gray)
         }
     }
+
 
     private fun isPastDate(date: Date): Boolean {
         val currentDate = Date()

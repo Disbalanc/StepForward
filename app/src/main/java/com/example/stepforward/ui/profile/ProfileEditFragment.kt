@@ -72,7 +72,11 @@ class ProfileEditFragment : Fragment() {
             val file = File(user.imagePath)
             if (file.exists()) {
                 val bitmap = BitmapFactory.decodeFile(user.imagePath)
-                binding.profileImage.setImageBitmap(bitmap)
+                if (bitmap != null) {
+                    binding.profileImage.setImageBitmap(bitmap)
+                } else {
+                    binding.profileImage.setImageResource(R.drawable.ic_profile)
+                }
             } else {
                 binding.profileImage.setImageResource(R.drawable.ic_profile)
             }
@@ -102,21 +106,21 @@ class ProfileEditFragment : Fragment() {
     }
 
     private fun saveChanges() {
-        val currentUser  = userViewModel.user.value ?: run {
-            Log.e("ProfileEdit", "User  is null")
+        val currentUser = userViewModel.user.value ?: run {
+            Log.e("ProfileEdit", "User is null")
             return
         }
 
-        val newImagePath = tempImagePath ?: currentUser .imagePath
+        val newImagePath = tempImagePath ?: currentUser.imagePath
         Log.d("ProfileEdit", "Saving image path: $newImagePath")
 
-        val updatedUser  = currentUser .copy(
+        val updatedUser = currentUser.copy(
             displayName = binding.nameText.text.toString(),
             abonement = binding.abonementText.text.toString(),
             imagePath = newImagePath
         )
 
-        userViewModel.updateUser (updatedUser )
+        userViewModel.updateUser(updatedUser)
         requireActivity().onBackPressed()
     }
 

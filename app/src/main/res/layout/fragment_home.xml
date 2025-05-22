@@ -228,10 +228,10 @@
 
             <ImageView
                 android:id="@+id/ModernDanceHalls_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_back_btn"
+                android:src="@drawable/main3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -265,10 +265,10 @@
 
             <ImageView
                 android:id="@+id/ProfessionalTeachers_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_back_btn"
+                android:src="@drawable/main4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -303,10 +303,10 @@
 
             <ImageView
                 android:id="@+id/BigScene_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_back_btn"
+                android:src="@drawable/main1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -341,10 +341,10 @@
 
             <ImageView
                 android:id="@+id/Directions_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_back_btn"
+                android:src="@drawable/main2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

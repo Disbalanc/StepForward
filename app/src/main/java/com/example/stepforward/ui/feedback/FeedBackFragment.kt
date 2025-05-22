@@ -1,5 +1,7 @@
 package com.example.stepforward.ui.feedback
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +29,16 @@ class FeedBackFragment : Fragment() {
 
         _binding = FragmentFeedbackBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        // Добавить обработчик нажатия на весь экран
+        binding.root.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stepup66.ru/"))
+            startActivity(intent)
+        }
+
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

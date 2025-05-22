@@ -79,10 +79,9 @@ class AddUserFragment : Fragment() {
         if (bitmap != null) {
             imagePath = loginDataSource.saveImageToFile(requireContext(), bitmap)
         } else {
-            imagePath = loginDataSource.saveImageToFile(
-                requireContext(),
-                BitmapFactory.decodeResource(resources, R.drawable.ic_profile)
-            )
+            // Если изображение не выбрано, используйте ресурс по умолчанию
+            val defaultBitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_profile)
+            imagePath = loginDataSource.saveImageToFile(requireContext(), defaultBitmap)
         }
 
         val newUser  = LoggedInUser(

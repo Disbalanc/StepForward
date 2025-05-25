@@ -35,7 +35,7 @@ data class LoggedInUser (
             for (i in 0 until size) {
                 add(Date(parcel.readLong()))
             }
-        },
+        }.sortedDescending(),
         parcel.readParcelable(Teacher::class.java.classLoader) ?: Teacher(0, 0, "", emptyList(), emptyList(), emptyList()), // Чтение teacher
         Role.values()[parcel.readInt()] // Чтение роли
     )

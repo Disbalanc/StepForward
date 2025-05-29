@@ -12,28 +12,27 @@
         android:layout_height="wrap_content"
         android:background="@drawable/edittext_background"
         android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
         <TextView
             android:id="@+id/nameDay_tv"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#2B2B2B"/>
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/time_tv"
-            android:paddingBottom="10dp"
-            android:paddingRight="10dp"
-            android:paddingLeft="10dp"
             android:layout_width="wrap_content"
-            android:textColor="#2B2B2B"
             android:layout_height="wrap_content"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

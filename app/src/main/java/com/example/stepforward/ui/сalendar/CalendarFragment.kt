@@ -35,7 +35,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        calendarAdapter = CalendarAdapter(emptyList())
+        calendarAdapter = CalendarAdapter(emptyList(), emptyList())
         binding.calendarRc.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = calendarAdapter
@@ -45,11 +45,17 @@ class CalendarFragment : Fragment() {
 
     private fun observeViewModel() {
         userViewModel.user.observe(viewLifecycleOwner) { user ->
-            user?.daySession?.let { sessions ->
-                calendarAdapter.updateList(sessions.sortedDescending())
+            user?.let {
+                updateCalendarData(user)
                 updateAbonementInfo(user)
             }
         }
+    }
+
+    private fun updateCalendarData(user: LoggedInUser) {
+        val sessions = user.daySession ?: emptyList()
+        val trialDates = user.trialLesson?.let { listOf(it.date) } ?: emptyList()
+        calendarAdapter.updateList(sessions.sortedDescending(), trialDates)
     }
 
     private fun updateAbonementInfo(user: LoggedInUser) {
@@ -62,7 +68,6 @@ class CalendarFragment : Fragment() {
         val remaining = total - used
         binding.abonementInfo.text = "Абонементы: $used использовано, $remaining осталось"
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

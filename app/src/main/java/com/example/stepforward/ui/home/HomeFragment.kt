@@ -69,6 +69,10 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.recordBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_home_to_freeLessonFragment)
+        }
+
         return binding.root
     }
 

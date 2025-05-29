@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#161616"
+    android:padding="16dp"
+    tools:context=".ui.home.FreeLessonFragment">
+
+    <!-- Изображение в верхней части -->
+    <ImageView
+        android:id="@+id/header_image"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_name"
+    android:scaleType="centerCrop" />
+
+    <!-- Заголовок -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Запись на бесплатный прием"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center" />
+
+    <EditText
+        android:id="@+id/age_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите возраст"
+        android:inputType="phone"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background" />
+
+    <!-- Ввод мобильного телефона -->
+    <EditText
+        android:id="@+id/phone_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Введите мобильный телефон"
+        android:inputType="phone"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background" /> <!-- Замените на ваш фон -->
+
+    <!-- ComboBox для направления танцев -->
+    <Spinner
+        android:id="@+id/dance_direction_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background"
+        android:layout_marginTop="16dp" />
+
+    <!-- Выбор студии -->
+    <Spinner
+        android:id="@+id/studio_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background"
+        android:layout_marginTop="16dp" />
+
+    <!-- Согласие с политикой обработки данных -->
+    <CheckBox
+        android:id="@+id/consent_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Я согласен с политикой обработки данных"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp" />
+
+    <!-- Кнопка для отправки данных -->
+    <TextView
+        android:id="@+id/submit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_shape"
+        android:padding="8dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/RecordTrialLesson"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
+
+</LinearLayout>

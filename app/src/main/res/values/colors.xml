@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="accent">#48B2E7</color>
     <color name="lt_gray">#808080</color>
+    <color name="trial_lesson">#FF9800</color>
+
 </resources>

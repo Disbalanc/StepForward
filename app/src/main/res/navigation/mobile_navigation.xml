@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_home_to_teacherAndDetailsFragment"
             app:destination="@id/teacherAndDetailsFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_freeLessonFragment"
+            app:destination="@id/freeLessonFragment" />
     </fragment>
 
     <fragment
@@ -60,4 +63,9 @@
         android:name="com.example.stepforward.ui.addUser.AddUserFragment"
         android:label="fragment_add_user"
         tools:layout="@layout/fragment_add_user" />
+    <fragment
+        android:id="@+id/freeLessonFragment"
+        android:name="com.example.stepforward.ui.home.FreeLessonFragment"
+        android:label="fragment_free_lesson"
+        tools:layout="@layout/fragment_free_lesson" />
 </navigation>

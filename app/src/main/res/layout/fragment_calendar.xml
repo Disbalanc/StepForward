@@ -30,4 +30,14 @@
         android:gravity="center_horizontal"
         android:text="Абонементы: 4 использовано, 4 осталось"/>
 
+    <TextView
+        android:id="@+id/trialLessonInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@color/black"/>
+
 </LinearLayout>

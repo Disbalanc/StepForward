@@ -7,6 +7,7 @@ import android.util.Log
 import com.example.stepforward.R
 import com.example.stepforward.data.model.LoggedInUser
 import com.example.stepforward.data.model.Role
+import com.example.stepforward.data.model.SchedulePattern
 import com.example.stepforward.data.model.Teacher
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,6 +18,7 @@ import java.io.IOException
 import java.lang.reflect.Type
 import java.net.URL
 import java.util.Calendar
+import java.util.Date
 import java.util.UUID
 
 class UserFileDataSource(private val context: Context) {
@@ -71,8 +73,40 @@ class UserFileDataSource(private val context: Context) {
     fun createUser(user: LoggedInUser) {
         var users = loadUsers()
         users = users.filter { it.abonement != user.abonement }
-        users += user
+
+        // Генерируем расписание при создании пользователя
+        val userWithSchedule = if (user.daySession.isEmpty()) {
+            user.copy(daySession = ScheduleGenerator.generateSchedule(user.schedulePattern))
+        } else {
+            user
+        }
+
+        users += userWithSchedule
         saveUsers(users)
+    }
+
+    fun updateUser(user: LoggedInUser): Boolean {
+        val users = loadUsers().toMutableList()
+        val userIndex = users.indexOfFirst { it.userId == user.userId }
+        if (userIndex != -1) {
+            users[userIndex] = user
+            saveUsers(users)
+            return true
+        }
+        return false
+    }
+
+    // Старый метод можно удалить или оставить для совместимости
+    fun updateUserSchedule(abonement: String, newSchedule: List<Date>): Boolean {
+        val users = loadUsers().toMutableList()
+        val userIndex = users.indexOfFirst { it.abonement == abonement }
+        if (userIndex != -1) {
+            val updatedUser = users[userIndex].copy(daySession = newSchedule)
+            users[userIndex] = updatedUser
+            saveUsers(users)
+            return true
+        }
+        return false
     }
 
     fun getUser(abonement: String, password: String): LoggedInUser? {
@@ -102,7 +136,7 @@ class UserFileDataSource(private val context: Context) {
         val admin = LoggedInUser(
             userId = UUID.randomUUID().toString(),
             abonement = "2325532151001201",
-            pass = "admin123",
+            pass = "123",
             displayName = "Admin",
             displaySecondName = "",
             displaySurName = "",
@@ -117,7 +151,12 @@ class UserFileDataSource(private val context: Context) {
                 achievements = emptyList(),
                 master_class = emptyList()
             ),
-            role = Role.ADMIN
+            role = Role.ADMIN,
+            schedulePattern = SchedulePattern(
+                daysOfWeek = listOf(Calendar.MONDAY, Calendar.WEDNESDAY, Calendar.FRIDAY),
+                timeOfDay = "18:00",
+                durationWeeks = 4
+            )
         )
 
         val user = LoggedInUser(
@@ -129,7 +168,6 @@ class UserFileDataSource(private val context: Context) {
             displaySurName = "Олеговна",
             dateBirthday = "18.10.2012",
             imagePath = R.drawable.logo_img.toString(),
-
             teacher = Teacher(
                 idTeacher = 1,
                 imageRes = R.drawable.teacher1,
@@ -138,7 +176,12 @@ class UserFileDataSource(private val context: Context) {
                 achievements = listOf("Победитель конкурса танцев", "Сертифицированный тренер"),
                 master_class = listOf("Мастер-класс по хип-хопу", "Современные танцы для начинающих")
             ),
-            role = Role.USER
+            role = Role.USER,
+            schedulePattern = SchedulePattern(
+                daysOfWeek = listOf(Calendar.MONDAY, Calendar.WEDNESDAY, Calendar.FRIDAY),
+                timeOfDay = "18:00",
+                durationWeeks = 4
+            )
         )
 
         saveUsers(listOf(admin, user))

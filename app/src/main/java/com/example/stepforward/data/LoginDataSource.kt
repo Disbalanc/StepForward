@@ -28,6 +28,17 @@ class LoginDataSource(private val context: Context) {
                 return Result.Error(IOException("Invalid credentials"))
             }
 
+            // Проверяем, есть ли сохраненное расписание
+            val sessions = if (user.daySession.isEmpty()) {
+                // Если нет - генерируем новое и сохраняем
+                val newSessions = ScheduleGenerator.generateSchedule(user.schedulePattern)
+                userFileDataSource.updateUserSchedule(user.abonement, newSessions)
+                newSessions
+            } else {
+                // Используем сохраненное расписание
+                user.daySession
+            }
+
             // Загрузка изображения из файла
             val bitmap = userFileDataSource.loadUserImage(context, user.imagePath)
             val fakeUser = user.copy(
@@ -39,83 +50,10 @@ class LoginDataSource(private val context: Context) {
                 displaySurName = user.displaySurName,
                 dateBirthday = user.dateBirthday,
                 imagePath = user.imagePath,
-                daySession = listOf(
-                    // Прошлый понедельник
-                    Calendar.getInstance().apply {
-                        add(Calendar.DAY_OF_WEEK, -7)
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                    }.time,
-
-                    // Прошедшая среда
-                    Calendar.getInstance().apply {
-                        add(Calendar.DAY_OF_WEEK, -5)
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                    }.time,
-
-                    // Прошедшая пятница
-                    Calendar.getInstance().apply {
-                        add(Calendar.DAY_OF_WEEK, -3)
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                    }.time,
-
-                    // Текущий понедельник
-                    Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        if (get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
-                            add(Calendar.DAY_OF_WEEK, - (get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY))
-                        }
-                    }.time,
-
-                    // Текущая среда
-                    Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        if (get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY) {
-                            add(Calendar.DAY_OF_WEEK, - (get(Calendar.DAY_OF_WEEK) - Calendar.WEDNESDAY))
-                        }
-                    }.time,
-
-                    // Текущая пятница
-                    Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        if (get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
-                            add(Calendar.DAY_OF_WEEK, - (get(Calendar.DAY_OF_WEEK) - Calendar.FRIDAY))
-                        }
-                    }.time,
-
-                    // Следующая среда
-                    Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        if (get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY) {
-                            add(Calendar.DAY_OF_WEEK, 7 - (get(Calendar.DAY_OF_WEEK) - Calendar.WEDNESDAY))
-                        }
-                    }.time,
-
-                    // Следующая пятница
-                    Calendar.getInstance().apply {
-                        set(Calendar.HOUR_OF_DAY, 18)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        if (get(Calendar.DAY_OF_WEEK) != Calendar.FRIDAY) {
-                            add(Calendar.DAY_OF_WEEK, 7 - (get(Calendar.DAY_OF_WEEK) - Calendar.FRIDAY))
-                        }
-                    }.time
-                ).sortedDescending(),
                 teacher = user.teacher,
-                role = user.role
+                daySession = sessions,
+                role = user.role,
+                schedulePattern = user.schedulePattern
             )
 
             // Сохраните изображение в кеш, если нужно

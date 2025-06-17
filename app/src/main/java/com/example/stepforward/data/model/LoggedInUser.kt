@@ -40,7 +40,8 @@ data class LoggedInUser (
             }
         }.sortedDescending(),
         parcel.readParcelable(Teacher::class.java.classLoader) ?: Teacher(0, 0, "", emptyList(), emptyList(), emptyList()), // Чтение teacher
-        Role.values()[parcel.readInt()] // Чтение роли
+        Role.values()[parcel.readInt()], // Чтение роли
+        trialLesson = parcel.readParcelable(TrialLesson::class.java.classLoader)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -58,6 +59,7 @@ data class LoggedInUser (
         }
         parcel.writeParcelable(teacher, flags) // Запись teacher
         parcel.writeInt(role.ordinal) // Сохранение роли
+        parcel.writeParcelable(trialLesson, flags)
     }
 
     override fun describeContents(): Int {
@@ -110,13 +112,15 @@ data class TrialLesson(
     val direction: String,
     val studio: String,
     val date: Date,
-    val completed: Boolean = false
+    val completed: Boolean = false,
+    val teacherId: Int // Добавляем ID учителя
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         Date(parcel.readLong()),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt() // Читаем teacherId
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -124,6 +128,7 @@ data class TrialLesson(
         parcel.writeString(studio)
         parcel.writeLong(date.time)
         parcel.writeByte(if (completed) 1 else 0)
+        parcel.writeInt(teacherId) // Записываем teacherId
     }
 
     override fun describeContents(): Int = 0

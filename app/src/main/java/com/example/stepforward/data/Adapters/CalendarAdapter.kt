@@ -9,12 +9,16 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stepforward.R
+import com.example.stepforward.data.model.Teacher
+import com.example.stepforward.data.model.TrialLesson
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class CalendarAdapter(        private var items: List<Date>,
-                              private var trialLessonDates: List<Date> = emptyList()) :
+class CalendarAdapter(private var items: List<Date>,
+                      private var trialLessons: List<TrialLesson> = emptyList(),
+                      private var teachers: List<Teacher> = emptyList() // Добавляем список учителей
+) :
     RecyclerView.Adapter<CalendarAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -22,15 +26,14 @@ class CalendarAdapter(        private var items: List<Date>,
         val time: TextView = view.findViewById(R.id.time_tv)
         val date: TextView = view.findViewById(R.id.date_tv) // New TextView for date
         val back: LinearLayout = view.findViewById(R.id.back)
+        val teacher: TextView = view.findViewById(R.id.teacher_tv) // Новое поле для учителя
 
         init {
             view.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val date = items[position]
-                    trialLessonDates.firstOrNull { trialDate ->
-                        isSameDay(date, trialDate)
-                    }?.let {
+                    val trialLesson = trialLessons.firstOrNull { isSameDay(date, it.date) }?.let {
 //                        // Показать диалог с информацией о пробном занятии
 //                        showTrialLessonInfo(it)
                     }
@@ -64,11 +67,20 @@ class CalendarAdapter(        private var items: List<Date>,
         holder.date.text = dateFormat.format(date)
 
         // Проверяем, является ли это пробным занятием
-        val isTrialLesson = trialLessonDates.any { isSameDay(date, it) }
+        val trialLesson = trialLessons.firstOrNull { isSameDay(date, it.date) }
 
         when {
-            isTrialLesson -> {
-                // Пробное занятие - особый стиль
+            trialLesson != null -> {
+                val teacher = teachers.firstOrNull { it.idTeacher == trialLesson.teacherId }
+                holder.teacher.text = teacher?.name ?: "Учитель"
+                holder.teacher.visibility = View.VISIBLE
+
+                // Форматируем дату из trialLesson
+                holder.nameDay.text = dayFormat.format(trialLesson.date)
+                holder.time.text = timeFormat.format(trialLesson.date)
+                holder.date.text = dateFormat.format(trialLesson.date)
+
+                // Стиль для пробного занятия
                 holder.back.backgroundTintList = holder.itemView.context.resources.getColorStateList(R.color.trial_lesson)
                 holder.nameDay.setTextColor(Color.WHITE)
                 holder.time.setTextColor(Color.WHITE)
@@ -127,9 +139,14 @@ class CalendarAdapter(        private var items: List<Date>,
         return today == checkDate
     }
 
-    fun updateList(newList: List<Date>, newTrialDates: List<Date> = emptyList()) {
+    fun updateList(
+        newList: List<Date>,
+        newTrialLessons: List<TrialLesson> = emptyList(),
+        newTeachers: List<Teacher> = emptyList()
+    ) {
         items = newList.sortedBy { it.time }
-        trialLessonDates = newTrialDates
+        trialLessons = newTrialLessons
+        teachers = newTeachers
         notifyDataSetChanged()
     }
 

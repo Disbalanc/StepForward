@@ -60,17 +60,16 @@ class HomeFragment : Fragment() {
         binding.root.postDelayed(::updateClubCartDetails, 100)
 
         binding.recordBtn.setOnClickListener {
-            // код обработки нажатия на кнопку записи на пробный прием
+            val bundle = Bundle().apply {
+                putParcelableArrayList("teachers", ArrayList(getTeachers()))
+            }
+            findNavController().navigate(R.id.action_nav_home_to_freeLessonFragment, bundle)
         }
 
         // Добавить обработчик нажатия для текста обратной связи
         binding.feedBack.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stepup66.ru/"))
             startActivity(intent)
-        }
-
-        binding.recordBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_home_to_freeLessonFragment)
         }
 
         return binding.root

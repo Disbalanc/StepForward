@@ -15,7 +15,11 @@
             app:destination="@id/teacherAndDetailsFragment" />
         <action
             android:id="@+id/action_nav_home_to_freeLessonFragment"
-            app:destination="@id/freeLessonFragment" />
+            app:destination="@id/freeLessonFragment">
+            <argument
+                android:name="teachers"
+                app:argType="com.example.stepforward.data.model.Teacher[]" />
+        </action>
     </fragment>
 
     <fragment

@@ -67,6 +67,14 @@
         android:background="@drawable/edittext_background"
         android:layout_marginTop="16dp" />
 
+    <Spinner
+        android:id="@+id/teacher_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background"
+        android:layout_marginTop="16dp" />
+
     <!-- Согласие с политикой обработки данных -->
     <CheckBox
         android:id="@+id/consent_checkbox"

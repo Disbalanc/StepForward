@@ -22,7 +22,7 @@ class LoginDataSource(private val context: Context) {
 
     fun login(username: String, password: String): Result<LoggedInUser> {
         return try {
-            //userFileDataSource.resetData()
+            userFileDataSource.resetData()
             val user = userFileDataSource.getUser(username, password)
             if (user == null) {
                 return Result.Error(IOException("Invalid credentials"))

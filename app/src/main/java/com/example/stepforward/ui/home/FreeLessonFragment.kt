@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.stepforward.R
 import com.example.stepforward.data.UserFileDataSource
 import com.example.stepforward.data.model.LoggedInUser
+import com.example.stepforward.data.model.Teacher
 import com.example.stepforward.data.model.TrialLesson
 import com.example.stepforward.databinding.FragmentFreeLessonBinding
 import com.example.stepforward.ui.login.UserViewModel
@@ -23,6 +25,8 @@ class FreeLessonFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var userViewModel: UserViewModel
     private lateinit var userFileDataSource: UserFileDataSource
+    private lateinit var teacherSpinner: Spinner
+    private lateinit var teachers: List<Teacher>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +36,7 @@ class FreeLessonFragment : Fragment() {
         _binding = FragmentFreeLessonBinding.inflate(inflater, container, false)
         userViewModel = ViewModelProvider(requireActivity()).get(UserViewModel::class.java)
         userFileDataSource = UserFileDataSource(requireContext())
+        teachers = arguments?.getParcelableArrayList("teachers") ?: emptyList()
 
         setupSpinners()
         setupSubmitButton()
@@ -64,6 +69,17 @@ class FreeLessonFragment : Fragment() {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         }
         binding.studioSpinner.adapter = studioAdapter
+
+        // Спиннер для выбора учителя
+        teacherSpinner = binding.teacherSpinner
+        val teacherAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            teachers.map { it.name }
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
+        teacherSpinner.adapter = teacherAdapter
     }
 
     private fun setupSubmitButton() {
@@ -75,20 +91,24 @@ class FreeLessonFragment : Fragment() {
 
             if (validateInput(phone, age)) {
                 val trialDate = generateTrialDate()
+                val selectedTeacherPosition = teacherSpinner.selectedItemPosition
+                val selectedTeacher = teachers[selectedTeacherPosition]
 
                 userViewModel.user.value?.let { currentUser ->
+// FreeLessonFragment.kt
                     val updatedUser = currentUser.copy(
-                        daySession = currentUser.daySession + trialDate,
+                        daySession = currentUser.daySession, // Не добавляем пробное занятие в daySession
                         trialLesson = TrialLesson(
                             direction = selectedDirection,
                             studio = selectedStudio,
-                            date = trialDate
+                            date = trialDate,
+                            teacherId = selectedTeacher.idTeacher
                         )
                     )
 
                     userViewModel.updateUser(updatedUser)
                     if (userFileDataSource.updateUser(updatedUser)) {
-                        showSuccessMessage(selectedDirection, selectedStudio, trialDate)
+                        showSuccessMessage(selectedDirection, selectedStudio, trialDate, selectedTeacher)
                         clearForm()
                     } else {
                         Toast.makeText(requireContext(), "Ошибка сохранения", Toast.LENGTH_SHORT).show()
@@ -137,16 +157,22 @@ class FreeLessonFragment : Fragment() {
         return true
     }
 
-    private fun showSuccessMessage(direction: String, studio: String, date: Date) {
+    private fun showSuccessMessage(
+        direction: String,
+        studio: String,
+        date: Date,
+        teacher: Teacher
+    ) {
         val dateFormat = android.text.format.DateFormat.getDateFormat(requireContext())
         val timeFormat = android.text.format.DateFormat.getTimeFormat(requireContext())
 
         val message = """
-            Вы записаны на пробное занятие!
-            Направление: $direction
-            Студия: $studio
-            Дата: ${dateFormat.format(date)} в ${timeFormat.format(date)}
-        """.trimIndent()
+        Вы записаны на пробное занятие!
+        Направление: $direction
+        Студия: $studio
+        Учитель: ${teacher.name}
+        Дата: ${dateFormat.format(date)} в ${timeFormat.format(date)}
+    """.trimIndent()
 
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
